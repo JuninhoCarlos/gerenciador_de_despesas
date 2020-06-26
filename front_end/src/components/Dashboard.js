@@ -1,9 +1,17 @@
 import React, {useState} from "react"
 
+import axios from "axios"
 //Transformar essa parte de cima em um component header
 
 function Dashboard() {
     
+    useState(() => {
+        axios.get(`http://localhost:8000/api/`)
+            .then(res => {
+                console.log(res.data)
+            })
+    },[])
+
     return (
         <React.Fragment>
             
