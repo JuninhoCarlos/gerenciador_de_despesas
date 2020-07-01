@@ -1,17 +1,22 @@
-import React, {useState} from "react"
+import React, {useState,useEffect} from "react"
 
 import axios from "axios"
 //Transformar essa parte de cima em um component header
 
 function Dashboard() {
-    
-    useState(() => {
-        axios.get(`http://localhost:8000/api/`)
-            .then(res => {
-                console.log(res.data)
-            })
-    },[])
 
+    const apiUrl = "localhost:8000/api/v1/"
+
+    useEffect(() => {
+        axios.get("http://localhost:8000/api/v1/categoria")
+            .then(res => {
+                const cat = res.data;
+                //setCategorias(cat);
+                console.log(cat)
+            })
+
+    },[])
+    
     return (
         <React.Fragment>
             

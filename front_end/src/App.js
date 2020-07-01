@@ -11,6 +11,7 @@ import './styles/dashboard.css'
 
 
 function App() {
+
     return (
         <Router>
             <NavBar />
@@ -19,7 +20,8 @@ function App() {
                 <SideBar />
                 <MainContent />
             </div>
-            
+
+
         </Router>
     )
 }

@@ -1,39 +1,18 @@
-import React, { useState,useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import {
-    Link
+    Link, NavLink
 } from "react-router-dom"
-import { act } from "react-dom/test-utils";
+
 
 function SideBar() {
-    const [active,setActive] = useState("")
 
-    
-    //Run only once
-    useEffect(() => {
-        let active = {} 
-        const urls = window.location.href.split("/")
-        
-        const path = urls[urls.length - 1]
-        
-        if (path === ""){
-            active = {dashboard : true}
-        }else {
-            active = {cadastroGasto : true}
-        }
-        setActive(active)
-    }, []);
 
-    //Run only when active changes
-    useEffect(() => {
-        console.log("active changed")
-    }, [active])
-
-    function updateActive(menu){
-        console.log("updating active class")
-        
-        setActive({[menu]: true})
+    /** Controls the active link */
+    function isActive(match, location) {
+        if (!match)
+            return false
+        return match.isExact
     }
-
 
 
     return (
@@ -42,20 +21,20 @@ function SideBar() {
                 <div className="sidebar-sticky pt-3">
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <Link className={"nav-link" + (active.dashboard ? ' active' : '')} to="/" onClick={() => updateActive("dashboard")}>
+                            <NavLink className={"nav-link"} to="/" isActive={isActive}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
               Dashboard <span className="sr-only">(current)</span>
-                            </Link>
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <Link className={"nav-link" + (active.cadastroGasto ? ' active' : '')} to="/cadastro-gasto" onClick={() => updateActive("cadastroGasto")}>
+                            <NavLink className={"nav-link"} to="/cadastro-gasto" isActive={isActive}>
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="feather">
                                     <path fillRule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" />
                                     <path fillRule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z" />
                                     <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                 </svg>
               Cadastrar gasto
-                                </Link>
+                                </NavLink>
                         </li>
                         <li className="nav-item">
                             <span className="nav-link" >
@@ -85,7 +64,7 @@ function SideBar() {
 
                     <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Saved reports</span>
-                        <span className="d-flex align-items-center text-muted"  aria-label="Add a new report">
+                        <span className="d-flex align-items-center text-muted" aria-label="Add a new report">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                         </span>
                     </h6>
