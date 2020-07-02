@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useFormik } from 'formik'
 import axios from "axios"
-import { SmartToaster, toast } from 'react-smart-toaster'
-
-
+import MultipleToast from "../utils/MultipleToast"
 
 function CadastroGasto() {
 
     const apiUrl = "http://localhost:8000/api/v1/"
     const [categorias, setCategorias] = useState()
-
-
-
-    const [alert, setAlert] = useState({
-        show: false,
-        msg: "some text",
-        variant: "success"
-    })
+    
+    const [toast, setToast] = useState([])
+    const [count, setCount] = useState(1)
 
     useEffect(() => {
         axios.get(apiUrl + "categoria")
@@ -37,32 +30,40 @@ function CadastroGasto() {
             data: ''
         },
         onSubmit: values => {
-            console.log(values)
+            //console.log(values)
+            let copy = toast.slice()
+            copy.push({msg: "Ola: " + count,title:"success"})
+            setToast(copy)
+            
+            setCount(count+1)
+            console.log(copy)
 
-            toast.success("React Smart Toaster - Success")
-
-            setAlert({
-                show: true,
-                msg: "Cadastrado com sucesso!",
-                variant: "success"
-            })
-            /* Disapear after 1s*/
-            setTimeout(() => {
-                setAlert({
-                    show: false
-                })
-            }, 1500)
         }
     })
 
+    function notifyOnClose(index){       
+        let copy = toast.slice()
+        copy.shift()
+        
+        setToast(copy)
+        
+        console.log("new toasts: ",copy)
+    }
+
     return (
 
-        <>
-            <SmartToaster
-                store={toast}
-                lightBackground={false}
-                position={"bottom_right"}
-            />
+        <div
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+                position: 'relative',
+                minHeight: '200px',
+            }}>
+
+
+            <MultipleToast toast={toast} notifyOnClose={notifyOnClose}/>
+
+
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 className="h2">Cadastro de gasto</h1>
             </div>
@@ -85,7 +86,7 @@ function CadastroGasto() {
                 </form>
             </div>
 
-        </>
+        </div>
     )
 }
 
